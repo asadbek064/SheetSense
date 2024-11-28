@@ -95,11 +95,11 @@ For support, bug reports and feature requests please use GitHub Issues.
 ## 🚧 In Development
 ### Formula Analysis
 
-- Integrate formula.js/formula-parser
-- Pattern recognition system
-- Enhanced complexity scoring
-- Risk assessment system
-- Formula explanation generator
+- ✅ Integrate xlsx for parsing
+- ✅ Pattern recognition system
+-    Enhanced complexity scoring
+- ✅ Risk assessment system
+-    Formula explanation generator
 
 ### Core Features
 
