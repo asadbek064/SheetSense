@@ -1,6 +1,6 @@
 {
   "name": "sheetsense",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "Excel workbook analyzer for quality validation, error detection and formula analysis",
   "type": "module",
   "main": "./dist/sheetsense.umd.js",
@@ -19,7 +19,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "publish-all": "npm run build && npm publish --registry https://registry.npmjs.org/ && npm publish --registry http://23.95.140.213:4873/"
   },
   "keywords": [
     "excel",
@@ -31,11 +32,7 @@
     "typescript",
     "xlsx"
   ],
-  "author": {
-    "name": "Asadbek Karimov",
-    "email": "contact@asadk.dev",
-    "url": "https://asadk.dev"
-  },
+  "author": "Asadbek Karimov <contact@asadk.dev> (https://asadk.dev)",
   "license": "Apache-2.0",
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.5",
@@ -53,5 +50,16 @@
   "dependencies": {
     "zod": "^3.23.8",
     "xlsx": "https://cdn.sheetjs.com/xlsx-latest/xlsx-latest.tgz"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asadbek064/SheetSense.git"
+  },
+  "bugs": {
+    "url": "https://github.com/asadbek064/SheetSense/issues"
+  },
+  "homepage": "https://github.com/asadbek064/SheetSense#readme"
 }
