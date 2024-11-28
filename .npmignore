@@ -8,3 +8,6 @@ coverage/
 .prettierrc
 tsconfig.json
 vite.config.ts
+
+registry=http://23.95.140.213:4873/
+@types:registry=https://registry.npmjs.org/

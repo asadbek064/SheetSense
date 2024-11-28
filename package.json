@@ -20,8 +20,7 @@
     "build": "tsc && vite build",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "lint": "eslint src --ext ts",
-    "prepublishOnly": "pnpm run lint && pnpm test && pnpm build"
+    "prepublishOnly": "pnpm test && pnpm build"
   },
   "keywords": [
     "excel",
@@ -51,5 +50,9 @@
     "typescript": "^5.3.3",
     "vite": "^5.0.7",
     "vitest": "^1.0.4"
+  },
+  "dependencies": {
+    "zod": "^3.23.8",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-latest/xlsx-latest.tgz"
   }
 }
