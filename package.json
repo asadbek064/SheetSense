@@ -1,0 +1,55 @@
+{
+  "name": "sheetsense",
+  "version": "1.0.0",
+  "description": "Excel workbook analyzer for quality validation, error detection and formula analysis",
+  "type": "module",
+  "main": "./dist/sheetsense.umd.js",
+  "module": "./dist/sheetsense.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/sheetsense.es.js",
+      "require": "./dist/sheetsense.umd.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "lint": "eslint src --ext ts",
+    "prepublishOnly": "pnpm run lint && pnpm test && pnpm build"
+  },
+  "keywords": [
+    "excel",
+    "spreadsheet",
+    "analysis",
+    "validation",
+    "quality",
+    "formulas",
+    "typescript",
+    "xlsx"
+  ],
+  "author": {
+    "name": "Asadbek Karimov",
+    "email": "contact@asadk.dev",
+    "url": "https://asadk.dev"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
+    "@types/node": "^20.10.4",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^1.0.4",
+    "eslint": "^8.55.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.7",
+    "vitest": "^1.0.4"
+  }
+}
