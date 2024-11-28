@@ -3,7 +3,6 @@ A robust TypeScript library for Excel workbook analysis that helps detect qualit
 
 ### Installation
 ```bash
-# npm
 pnpm install sheetsense
 ```
 
@@ -66,9 +65,9 @@ For support, bug reports and feature requests please use GitHub Issues.
 ### Implemented ✅
 ### Formula Analysis
 
-- ✅ Basic complexity scoring
+-    Basic complexity scoring
 - ✅ Division by zero detection 
-- ✅ Complex formula detection 
+-    Complex formula detection 
 - ✅ Basic formula parser
 
 ### Data Validation

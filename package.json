@@ -3,9 +3,9 @@
   "version": "0.0.4",
   "description": "Excel workbook analyzer for quality validation, error detection and formula analysis",
   "type": "module",
-  "main": "./dist/sheetsense.umd.js", 
+  "main": "./dist/sheetsense.umd.js",
   "module": "./dist/sheetsense.es.js",
-  "browser": "./dist/sheetsense.umd.js", 
+  "browser": "./dist/sheetsense.umd.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
@@ -45,14 +45,13 @@
     "@typescript-eslint/parser": "^6.13.2",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/coverage-v8": "^1.0.4",
-    "eslint": "^8.55.0",
     "typescript": "^5.3.3",
     "vite": "^5.0.7",
     "vitest": "^1.0.4"
   },
   "dependencies": {
-    "zod": "^3.23.8",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-latest/xlsx-latest.tgz"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-latest/xlsx-latest.tgz",
+    "zod": "^3.23.8"
   },
   "directories": {
     "test": "tests"

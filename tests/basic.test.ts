@@ -16,12 +16,12 @@ test('detects basic formula errors', () => {
   wb.Sheets = { 'Sheet1': ws };
   wb.SheetNames = ['Sheet1'];
 
-  console.log('Created workbook:', JSON.stringify(wb, null, 2));
+  //console.log('Created workbook:', JSON.stringify(wb, null, 2));
   
   const analyzer = new ExcelAnalyzer(wb);
   const analysis = analyzer.analyze();
   
-  console.log('Analysis result:', JSON.stringify(analysis, null, 2));
+  //console.log('Analysis result:', JSON.stringify(analysis, null, 2));
   
   expect(analysis.issues.length).toBeGreaterThan(0);
   expect(analysis.issues).toContainEqual(

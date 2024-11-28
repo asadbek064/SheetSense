@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SheetSense Analyzer</title>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <script src="dist/sheetsense.browser.js"></script>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .upload-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        #drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 4px;
+            padding: 2rem;
+            margin: 1rem 0;
+            cursor: pointer;
+        }
+        #drop-zone.dragover {
+            border-color: #0066cc;
+            background: #f0f7ff;
+        }
+        .results {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .issue {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        .error {
+            background: #fff5f5;
+            border-left: 4px solid #dc2626;
+        }
+        .warning {
+            background: #fffbeb;
+            border-left: 4px solid #d97706;
+        }
+        .info {
+            background: #f0f9ff;
+            border-left: 4px solid #0284c7;
+        }
+        .metadata {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+        .hidden {
+            display: none;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #666;
+        }
+        .footer a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h1>SheetSense Analyzer </h1>
+        <div id="drop-zone">
+            <p>Drop your Excel file here or click to choose</p>
+            <input type="file" id="file-input" accept=".xlsx,.xls" class="hidden">
+        </div>
+    </div>
+
+    <div id="results" class="results hidden">
+        <h2>Analysis Results</h2>
+        <div class="metadata">
+            <h3>Workbook Metadata</h3>
+            <div id="metadata-content"></div>
+        </div>
+        <div id="issues-container">
+            <h3>Issues Found</h3>
+            <div id="issues-content"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>
+            <a href="https://ezy.ovh/bmicX" target="_blank">View on GitHub</a> | 
+            Created by <a href="https://ezy.ovh/oEaFv" target="_blank">@asadbek064</a>
+        </p>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const results = document.getElementById('results');
+        const metadataContent = document.getElementById('metadata-content');
+        const issuesContent = document.getElementById('issues-content');
+
+        // Drag and drop handlers
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            handleFile(file);
+        });
+
+        // Click to upload
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            handleFile(file);
+        });
+
+        function handleFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                
+                // Use the actual SheetSense package
+                const analyzer = new SheetSense.ExcelAnalyzer(workbook);
+                const analysis = analyzer.analyze();
+                displayResults(analysis);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function displayResults(analysis) {
+            results.classList.remove('hidden');
+
+            // Display metadata
+            metadataContent.innerHTML = `
+                <p>Sheets: ${analysis.metadata.sheetCount}</p>
+                <p>Formulas: ${analysis.metadata.formulaCount}</p>
+                <p>Named Ranges: ${analysis.metadata.namedRanges.length}</p>
+                <p>Volatile Functions: ${analysis.metadata.volatileFunctions}</p>
+                <p>External References: ${analysis.metadata.externalReferences}</p>
+            `;
+
+            // Display issues
+            if (analysis.issues.length === 0) {
+                issuesContent.innerHTML = '<p>No issues found!</p>';
+            } else {
+                issuesContent.innerHTML = analysis.issues.map(issue => `
+                    <div class="issue ${issue.severity}">
+                        <strong>${issue.type.toUpperCase()}: ${issue.severity}</strong>
+                        <p>${issue.message}</p>
+                        <p>Location: Sheet "${issue.sheet}", Cell ${issue.cell}</p>
+                        ${issue.suggestion ? `<p>Suggestion: ${issue.suggestion}</p>` : ''}
+                    </div>
+                `).join('');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -17,8 +17,6 @@ test('detects formulas in worksheet', () => {
 
   const parser = new ExcelParser(wb);
   const formulas = parser.getFormulaCells(wb.Sheets['Sheet1']);
-
-  console.log('Found formulas:', Array.from(formulas.entries()));
   
   expect(formulas.size).toBeGreaterThan(0);
   expect(formulas.get('B2')).toBe('A1*2');
