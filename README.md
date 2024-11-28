@@ -1,33 +1,6 @@
 # SheetSense
 A robust TypeScript library for Excel workbook analysis that helps detect quality issues, validate formulas, and ensure data consistency across spreadsheets. SheetSense provides comprehensive validation and analysis capabilities to help maintain high-quality Excel workbooks.
 
-## Features
-
-### Formula Analysis
-- Detects complex nested formulas and suggests simplification
-- Identifies potential division by zero errors
-- Analyzes formula complexity based on nested functions and operators
-- Validates formula structure and syntax
-
-### Data Validation
-- Ensures data type consistency within columns
-- Validates date formats (YYYY-MM-DD)
-- Detects mixed data types and suggests standardization
-- Tracks column-level data quality metrics
-
-### Style Analysis
-- Validates consistent number formatting
-- Detects mixed format usage (1000.00 vs 1,000)
-- Provides formatting standardization suggestions
-- Identifies inconsistent styling patterns
-
-### Metadata Collection
-- Tracks total formula count
-- Monitors sheet statistics
-- Records named ranges
-- Identifies volatile functions
-- Detects external references
-
 ### Installation
 ```bash
 # npm
@@ -89,37 +62,34 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 ### Support
 For support, bug reports and feature requests please use GitHub Issues.
 
-
-
 ## SheetSense TODO
 ### Implemented ✅
 ### Formula Analysis
 
-- ✅ Basic complexity scoring (FormulaAnalyzer.calculateComplexity())
-- ✅ Division by zero detection (FormulaRules.hasZeroDivision())
-- ✅ Complex formula detection (FormulaAnalyzer.isComplexFormula())
-- ✅ Basic formula parser (ExcelParser.getFormulaCells())
+- ✅ Basic complexity scoring
+- ✅ Division by zero detection 
+- ✅ Complex formula detection 
+- ✅ Basic formula parser
 
 ### Data Validation
 
-- ✅ Data type consistency (DataRules.validateDataTypes())
-- ✅ Date format validation (DataRules.validateDates())
-- ✅ Column type analysis (ExcelAnalyzer.extractColumns())
-- ✅ Mixed type detection (Analyzer.createDataTypeIssue())
+- ✅ Data type consistency 
+- ✅ Date format validation
+- ✅ Column type analysis 
+- ✅ Mixed type detection 
 
 ### Style Checks
 
-- ✅ Number format consistency (StyleAnalyzer.analyzeNumberFormatting())
-- ✅ Format pattern detection (StyleAnalyzer.detectNumberFormat())
+- ✅ Number format consistency
+- ✅ Format pattern detection 
 
 ### Metadata
 
 - ✅ Basic statistics tracking
-
-- Formula count
-- Sheet count
-- Named ranges list
-- Basic metrics
+- ✅ Formula count
+- ✅ Sheet count
+- ✅ Named ranges list
+- ✅ Basic metrics
 
 
 
