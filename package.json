@@ -19,8 +19,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "test": "vitest",
-    "coverage": "vitest run --coverage",
-    "prepublishOnly": "pnpm test && pnpm build"
+    "coverage": "vitest run --coverage"
   },
   "keywords": [
     "excel",
