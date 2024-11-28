@@ -1,15 +1,18 @@
 {
   "name": "sheetsense",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Excel workbook analyzer for quality validation, error detection and formula analysis",
   "type": "module",
-  "main": "./dist/sheetsense.umd.js",
+  "main": "./dist/sheetsense.umd.js", 
   "module": "./dist/sheetsense.es.js",
+  "browser": "./dist/sheetsense.umd.js", 
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/sheetsense.es.js",
-      "require": "./dist/sheetsense.umd.js"
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/sheetsense.browser.js",
+      "require": "./dist/sheetsense.node.js",
+      "default": "./dist/sheetsense.browser.js"
     }
   },
   "files": [

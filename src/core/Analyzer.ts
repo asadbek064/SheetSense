@@ -11,7 +11,7 @@ export class ExcelAnalyzer {
   constructor(private workbook: WorkBook) {
     this.parser = new ExcelParser(workbook);
     this.formulaAnalyzer = new FormulaAnalyzer(this.parser);
-    this.styleAnalyzer = new StyleAnalyzer(this.parser);
+    this.styleAnalyzer = new StyleAnalyzer();
   }
 
   analyze(): Analysis {

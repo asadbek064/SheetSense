@@ -12,12 +12,33 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'SheetSense',
-      fileName: (format) => `sheetsense.${format}.js`,
-      formats: ['es', 'umd']
+      formats: ['iife', 'cjs'],
+      fileName: (format) => {
+        if (format === 'iife') return 'sheetsense.browser.js';
+        return 'sheetsense.node.js';
+      }
     },
     sourcemap: true,
     outDir: 'dist',
-    emptyOutDir: true
+    emptyOutDir: true,
+    rollupOptions: {
+      // Only mark dependencies as external for CJS build
+      external: (id) => {
+        if (id === 'zod' || id === 'xlsx') {
+          // Check the current format being built
+          const currentFormat = process.env.FORMAT;
+          return currentFormat === 'cjs';
+        }
+        return false;
+      },
+      // For IIFE build, define how external dependencies should be found in browser
+      output: {
+        globals: {
+          zod: 'zod',
+          xlsx: 'XLSX'
+        }
+      }
+    }
   },
   test: {
     globals: true,
