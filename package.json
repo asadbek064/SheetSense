@@ -1,6 +1,6 @@
 {
   "name": "sheetsense",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Excel workbook analyzer for quality validation, error detection and formula analysis",
   "type": "module",
   "main": "./dist/sheetsense.umd.js",
