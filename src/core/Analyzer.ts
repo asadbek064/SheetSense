@@ -27,13 +27,14 @@ export class ExcelAnalyzer {
     for (const sheetName of this.workbook?.SheetNames || []) {
       const sheet = this.workbook.Sheets[sheetName];
       const columns = this.extractColumns(sheet);
-      
-      // Data quality checks
+
       for (const [col, cells] of columns.entries()) {
-        // Data type analysis
-        const types = new Set(cells.map(c => c.t));
-        if (types.size > 1) {
-          issues.push(this.createDataTypeIssue(col, sheetName));
+        if (cells.length === 0) continue;
+
+        // Binary/indicator check
+        const uniqueValues = new Set(cells.map(c => String(c.v).trim()));
+        if (uniqueValues.size <= 2 && [...uniqueValues].every(v => ['0', '1', 'vote', 'northeast', 'southeast', 'midwest', 'west'].includes(v))) {
+          continue;
         }
 
         // Date validation
@@ -43,18 +44,39 @@ export class ExcelAnalyzer {
           if (invalidDates.length > 0) {
             issues.push(this.createDateIssue(col, sheetName));
           }
+          continue;
         }
 
-        // Style checks
-        const styleIssues = this.styleAnalyzer.analyzeNumberFormatting(
-          cells.map(c => String(c.v)),
-          col,
-          sheetName
-        );
-        issues.push(...styleIssues);
+        // Numeric check
+        const nonHeaderCells = cells.slice(1);
+        const isNumericColumn = nonHeaderCells.every(cell => {
+          const value = String(cell.v).trim().replace(/,/g, '');
+          return !isNaN(Number(value)) && value !== '';
+        });
+
+        if (isNumericColumn) {
+          const formats = new Set(nonHeaderCells.map(c => this.getNumberFormat(c.v)));
+          if (formats.size > 1) {
+            issues.push({
+              type: 'style',
+              severity: 'warning',
+              message: `Inconsistent number format in column ${col}`,
+              cell: col,
+              sheet: sheetName,
+              suggestion: 'Use consistent number formatting'
+            });
+          }
+          continue;
+        }
+
+        // Mixed types check
+        const types = new Set(nonHeaderCells.map(c => typeof c.v));
+        if (types.size > 1) {
+          issues.push(this.createDataTypeIssue(col, sheetName));
+        }
       }
 
-      // Formula checks
+      // Formula validation
       const formulaCells = this.parser.getFormulaCells(sheet);
       metadata.formulaCount += formulaCells.size;
 
@@ -85,27 +107,11 @@ export class ExcelAnalyzer {
 
     return { issues, metadata };
   }
-
-  private getColumnValues(sheet: WorkSheet): Map<string, any[]> {
-    const columns = new Map<string, any[]>();
-    const ref = sheet['!ref'];
-    if (!ref) return columns;
-
-    for (const cell in sheet) {
-      if (cell[0] === '!') continue;
-      const col = cell.match(/[A-Z]+/)?.[0];
-      if (col) {
-        if (!columns.has(col)) columns.set(col, []);
-        columns.get(col)?.push(sheet[cell].v);
-      }
-    }
-
-    return columns;
-  }
-
-  private isDateColumn(values: any[]): boolean {
-    return values.some(v => typeof v === 'string' && 
-      (v.includes('-') || v.includes('/') || v.includes('.')));
+  private getNumberFormat(value: any): string {
+    const str = String(value).trim();
+    if (/^\d+\.\d+$/.test(str)) return 'decimal';
+    if (/^\d{1,3}(,\d{3})*$/.test(str)) return 'comma';
+    return 'other';
   }
 
   private isComplexFormula(formula: string): boolean {
