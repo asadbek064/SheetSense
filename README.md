@@ -12,7 +12,17 @@ import { ExcelAnalyzer } from 'sheetsense';
 import { readFile } from 'xlsx';
 
 // Load your workbook
-const workbook = readFile('example.xlsx');
+const workbook = XLSX.read(data,
+    {
+        type: 'buffer',
+        cellFormula: true,
+        cellNF: true,
+        cellText: true,
+        cellStyles: true,
+        cellDates: true,
+        raw: true
+    }
+);
 
 // Create analyzer instance
 const analyzer = new ExcelAnalyzer(workbook);
