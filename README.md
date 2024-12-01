@@ -1,5 +1,32 @@
 # SheetSense
+[![private registry](https://img.shields.io/badge/verdaccio-v0.0.7-blue?style=flat-square)](http://23.95.140.213:4873/-/web/detail/sheetsense)
+[![npm version](https://img.shields.io/npm/v/sheetsense.svg?style=flat-square)](https://www.npmjs.com/package/sheetsense)
+[![npm downloads](https://img.shields.io/npm/dm/sheetsense.svg?style=flat-square)](https://www.npmjs.com/package/sheetsense)
+[![license](https://img.shields.io/npm/l/sheetsense.svg?style=flat-square)](https://github.com/asadbek064/sheetsense/blob/main/LICENSE)
+
+
 A robust TypeScript library for Excel workbook analysis that helps detect quality issues, validate formulas, and ensure data consistency across spreadsheets. SheetSense provides comprehensive validation and analysis capabilities to help maintain high-quality Excel workbooks.
+
+## Features
+
+- Formula Analysis
+  - Complexity scoring and validation
+  - Division by zero detection
+  - Circular reference detection
+  - Pattern recognition system
+  - Risk assessment system
+- Data Validation
+  - Type consistency checking
+  - Date format validation
+  - Column type analysis
+  - Mixed type detection
+- Style Checks
+  - Number format consistency
+  - Format pattern detection
+- Metadata Analysis
+  - Statistics tracking
+  - Formula counting
+  - Named ranges listing
 
 ### Installation
 ```bash
@@ -69,13 +96,12 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 ### Support
 For support, bug reports and feature requests please use GitHub Issues.
 
-## SheetSense TODO
-### Implemented ✅
+## Roadmap
 ### Formula Analysis
 
--    Basic complexity scoring
+- [ ] Basic complexity scoring
 - ✅ Division by zero detection 
--    Complex formula detection 
+- [ ] Complex formula detection 
 - ✅ Basic formula parser
 - ✅ Circular reference detection
 
