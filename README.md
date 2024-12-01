@@ -77,6 +77,7 @@ For support, bug reports and feature requests please use GitHub Issues.
 - ✅ Division by zero detection 
 -    Complex formula detection 
 - ✅ Basic formula parser
+- ✅ Circular reference detection
 
 ### Data Validation
 
