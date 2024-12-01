@@ -1,5 +1,5 @@
 # SheetSense
-[![private registry](https://img.shields.io/badge/verdaccio-v0.0.7-blue?style=flat-square)](http://23.95.140.213:4873/-/web/detail/sheetsense)
+[![private registry](https://img.shields.io/badge/verdaccio-blue?style=flat-square)](https://vdo.asadk.dev/-/web/detail/sheetsense)
 [![npm version](https://img.shields.io/npm/v/sheetsense.svg?style=flat-square)](https://www.npmjs.com/package/sheetsense)
 [![npm downloads](https://img.shields.io/npm/dm/sheetsense.svg?style=flat-square)](https://www.npmjs.com/package/sheetsense)
 [![license](https://img.shields.io/npm/l/sheetsense.svg?style=flat-square)](https://github.com/asadbek064/sheetsense/blob/main/LICENSE)
