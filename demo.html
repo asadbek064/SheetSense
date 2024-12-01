@@ -146,7 +146,17 @@
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
+                const workbook = XLSX.read(data,
+                    {
+                        type: 'buffer',
+      cellFormula: true,
+      cellNF: true,
+      cellText: true,
+      cellStyles: true,
+      cellDates: true,
+      raw: true
+                    }
+                );
                 
                 // Use the actual SheetSense package
                 const analyzer = new SheetSense.ExcelAnalyzer(workbook);

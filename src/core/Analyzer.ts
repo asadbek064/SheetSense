@@ -1,4 +1,4 @@
-import { WorkBook, Sheet as WorkSheet } from "xlsx";
+import { WorkBook, Sheet as WorkSheet, read } from "xlsx";
 import { Analysis, Issue } from "../types";
 import { FormulaAnalyzer } from "./FormulaAnalyzer";
 import { StyleAnalyzer } from "./StyleAnalyzer";
@@ -12,6 +12,20 @@ export class ExcelAnalyzer {
     this.parser = new ExcelParser(workbook);
     this.formulaAnalyzer = new FormulaAnalyzer(this.parser);
     this.styleAnalyzer = new StyleAnalyzer();
+  }
+
+  static fromBuffer(buffer: Buffer): ExcelAnalyzer {
+    // Parse with all features enabled
+    const wb = read(buffer, {
+      type: 'buffer',
+      cellFormula: true,
+      cellNF: true,
+      cellText: true,
+      cellStyles: true,
+      cellDates: true,
+      raw: true
+    });
+    return new ExcelAnalyzer(wb);
   }
 
   analyze(): Analysis {
@@ -41,7 +55,7 @@ export class ExcelAnalyzer {
 
       // Check circular references
       for (const [cell, deps] of dependencies) {
-        if (this.hasCircularReference(cell, deps, dependencies, new Set())) {
+        if (this.hasCircularReference(cell, cell, deps, dependencies, new Set())) {
           issues.push({
             type: "formula",
             severity: "error",
@@ -147,34 +161,49 @@ export class ExcelAnalyzer {
 
   private extractDependencies(formula: string): Set<string> {
     const deps = new Set<string>();
-    const cellRefs = formula.match(/[A-Z]+[0-9]+/g) || [];
-    cellRefs.forEach((ref) => deps.add(ref));
+    const cellRefs = formula.match(/[A-Z]+[0-9]+(?::[A-Z]+[0-9]+)?/g) || [];
+    cellRefs.forEach(ref => {
+      if (ref.includes(':')) {
+        // Handle range references by expanding them
+        const [start, end] = ref.split(':');
+        deps.add(start);
+        deps.add(end);
+        // Could expand the full range here if needed
+      } else {
+        deps.add(ref);
+      }
+    });
+    
     return deps;
   }
+  
   private hasCircularReference(
-    startCell: string,
+    originalCell: string,
+    currentCell: string,
     deps: Set<string>,
     allDeps: Map<string, Set<string>>,
     visited: Set<string>
   ): boolean {
-    visited.add(startCell);
+    // Base case: if we've seen this cell before in this path
+    if (visited.has(currentCell)) {
+      // It's only a circular reference if we've come back to our original cell
+      return currentCell === originalCell;
+    }
 
+    visited.add(currentCell);
+
+    // Check each dependency
     for (const dep of deps) {
-      if (dep === startCell || visited.has(dep)) return true;
-
       const nextDeps = allDeps.get(dep);
-      if (
-        nextDeps &&
-        this.hasCircularReference(
-          startCell,
-          nextDeps,
-          allDeps,
-          new Set(visited)
-        )
-      ) {
-        return true;
+      if (nextDeps) {
+        // If this dependency leads back to our original cell, we have a circular reference
+        if (dep === originalCell || 
+            this.hasCircularReference(originalCell, dep, nextDeps, allDeps, new Set([...visited]))) {
+          return true;
+        }
       }
     }
+
     return false;
   }
 

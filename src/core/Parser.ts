@@ -10,19 +10,25 @@ export class ExcelParser {
       if (cellAddress[0] === '!') continue;
       
       const cell = sheet[cellAddress];
-      // Check for formula property
-      if (cell && typeof cell === 'object' && 'f' in cell && cell.f) {
-        console.log('Found formula:', cellAddress, cell.f);
-        formulas.set(cellAddress, cell.f);
-      } else if (cell && typeof cell === 'object' && 'v' in cell && 
-                 typeof cell.v === 'string' && cell.v.startsWith('=')) {
-        // Also check for string values that look like formulas
-        const formula = cell.v.substring(1); // Remove the '=' prefix
-        console.log('Found string formula:', cellAddress, formula);
+      if (!cell) continue;
+
+      let formula = '';
+      
+      // Handle explicit formula field
+      if ('f' in cell && cell.f) {
+        formula = cell.f;
         formulas.set(cellAddress, formula);
+      } 
+      // Handle string-type cells that might be formulas
+      else if (cell.t === 'str' && cell.v && typeof cell.v === 'string') {
+        const value = cell.v.trim();
+        if (value.startsWith('=')) {
+          formula = value.substring(1);
+          formulas.set(cellAddress, formula);
+        }
       }
     }
-    
+
     return formulas;
   }
 }
