@@ -20,6 +20,10 @@ A robust TypeScript library for Excel workbook analysis that helps detect qualit
   - Date format validation
   - Column type analysis
   - Mixed type detection
+- Hidden Content Detection
+  - Hidden cell identification
+  - Hidden row/column analysis
+  - Hidden range reporting
 - Style Checks
   - Number format consistency
   - Format pattern detection
@@ -27,6 +31,7 @@ A robust TypeScript library for Excel workbook analysis that helps detect qualit
   - Statistics tracking
   - Formula counting
   - Named ranges listing
+  - Hidden content metrics
 
 ### Installation
 ```bash
@@ -78,6 +83,12 @@ The analyzer returns and `Analysis` object containing:
     namedRanges: string[];
     volatileFunctions: number;
     externalReferences: number;
+    hiddenContent: {
+      totalHiddenCells: number;
+      totalHiddenRows: number;
+      totalHiddenColumns: number;
+      hiddenRanges: string[];
+    };
   };
 }
 ```
@@ -116,6 +127,13 @@ For support, bug reports and feature requests please use GitHub Issues.
 
 - ✅ Number format consistency
 - ✅ Format pattern detection 
+
+### Hidden Content Analysis
+
+- ✅ Hidden cell detection
+- ✅ Hidden row/column analysis
+- ✅ Hidden range identification
+- ✅ Hidden content metrics
 
 ### Metadata
 
