@@ -3,15 +3,31 @@ import { Analysis, Issue } from "../types";
 import { FormulaAnalyzer } from "./FormulaAnalyzer";
 import { StyleAnalyzer } from "./StyleAnalyzer";
 import { ExcelParser } from "./Parser";
+import { HiddenContentAnalyzer } from "./HiddenContentAnalyzer";
+
+interface AnalysisMetadata {
+  formulaCount: number;
+  sheetCount: number;
+  namedRanges: string[];
+  volatileFunctions: number;
+  externalReferences: number;
+  hiddenCells: number;
+  hiddenRows: number;
+  hiddenColumns: number;
+  hiddenRanges: string[];
+}
+
 export class ExcelAnalyzer {
   private parser: ExcelParser;
   private formulaAnalyzer: FormulaAnalyzer;
   private styleAnalyzer: StyleAnalyzer;
+  private hiddenAnalyzer: HiddenContentAnalyzer;
 
   constructor(private workbook: WorkBook) {
     this.parser = new ExcelParser(workbook);
     this.formulaAnalyzer = new FormulaAnalyzer(this.parser);
     this.styleAnalyzer = new StyleAnalyzer();
+    this.hiddenAnalyzer = new HiddenContentAnalyzer(workbook);
   }
 
   static fromBuffer(buffer: Buffer): ExcelAnalyzer {
@@ -30,16 +46,29 @@ export class ExcelAnalyzer {
 
   analyze(): Analysis {
     const issues: Issue[] = [];
-    const metadata = {
+    const metadata: AnalysisMetadata = {
       formulaCount: 0,
       sheetCount: this.workbook?.SheetNames?.length || 0,
       namedRanges: [],
       volatileFunctions: 0,
       externalReferences: 0,
+      hiddenCells: 0,
+      hiddenRows: 0,
+      hiddenColumns: 0,
+      hiddenRanges: []
     };
 
     for (const sheetName of this.workbook?.SheetNames || []) {
       const sheet = this.workbook.Sheets[sheetName];
+      
+      // Analyze hidden content
+      const { issues: hiddenIssues, metrics: hiddenMetrics } = this.hiddenAnalyzer.analyze(sheet);
+      issues.push(...hiddenIssues);
+
+      metadata.hiddenCells = (metadata.hiddenCells || 0) + hiddenMetrics.hiddenCells;
+      metadata.hiddenRows = (metadata.hiddenRows || 0) + hiddenMetrics.hiddenRows;
+      metadata.hiddenColumns = (metadata.hiddenColumns || 0) + hiddenMetrics.hiddenColumns;
+
       const columns = this.extractColumns(sheet);
 
       // Formula validation and dependency analysis

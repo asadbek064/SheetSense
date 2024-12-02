@@ -1,9 +1,16 @@
 import { WorkBook, Sheet as WorkSheet } from 'xlsx';
+import { HiddenContentAnalyzer } from './HiddenContentAnalyzer';
 
 export interface WorkbookMetadata {
   formulaCount: number;
   sheetCount: number;
   namedRanges: string[];
+  hiddenContent: {
+    totalHiddenCells: number;
+    totalHiddenRows: number;
+    totalHiddenColumns: number;
+    hiddenRanges: string[];
+  };
   metrics: {
     totalCells: number;
     dataCells: number;
@@ -13,13 +20,23 @@ export interface WorkbookMetadata {
 }
 
 export class MetadataCollector {
-  constructor(private workbook: WorkBook) {}
+  private hiddenAnalyzer: HiddenContentAnalyzer;
+
+  constructor(private workbook: WorkBook) {
+    this.hiddenAnalyzer = new HiddenContentAnalyzer(workbook);
+  }
 
   collect(): WorkbookMetadata {
     const metadata: WorkbookMetadata = {
       formulaCount: 0,
       sheetCount: this.workbook.SheetNames.length,
       namedRanges: this.getNamedRanges(),
+      hiddenContent: {
+        totalHiddenCells: 0,
+        totalHiddenRows: 0,
+        totalHiddenColumns: 0,
+        hiddenRanges: []
+      },
       metrics: {
         totalCells: 0,
         dataCells: 0,
@@ -28,17 +45,24 @@ export class MetadataCollector {
       }
     };
 
+
     // Process each sheet
     for (const sheetName of this.workbook.SheetNames) {
       const sheet = this.workbook.Sheets[sheetName];
       metadata.formulaCount += this.countFormulas(sheet);
       this.collectSheetMetrics(sheet, metadata.metrics);
+
+      // Collect hidden content metrics
+      const { metrics: hiddenMetrics } = this.hiddenAnalyzer.analyze(sheet);
+      metadata.hiddenContent.totalHiddenCells += hiddenMetrics.hiddenCells;
+      metadata.hiddenContent.totalHiddenRows += hiddenMetrics.hiddenRows;
+      metadata.hiddenContent.totalHiddenColumns += hiddenMetrics.hiddenColumns;
+      metadata.hiddenContent.hiddenRanges.push(...hiddenMetrics.hiddenRanges);
     }
 
     // Calculate percentage populated
     metadata.metrics.percentagePopulated = 
       (metadata.metrics.dataCells / metadata.metrics.totalCells) * 100;
-
     return metadata;
   }
 

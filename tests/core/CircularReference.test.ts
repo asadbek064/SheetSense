@@ -17,8 +17,8 @@ describe('CircularReferences', () => {
     const analyzer = new ExcelAnalyzer(wb);
     const analysis = analyzer.analyze();
     
-    console.log('Analysis:', JSON.stringify(analysis, null, 2));
-    console.log('Cell A1:', JSON.stringify(ws['A1'], null, 2));
+    //console.log('Analysis:', JSON.stringify(analysis, null, 2));
+    //console.log('Cell A1:', JSON.stringify(ws['A1'], null, 2));
 
     expect(analysis.metadata.formulaCount).toBe(1);
     expect(analysis.issues).toContainEqual(
@@ -46,19 +46,19 @@ describe('CircularReferences', () => {
     const analyzer = new ExcelAnalyzer(wb);
     const analysis = analyzer.analyze();
 
-    console.log('Analysis:', JSON.stringify(analysis, null, 2));
+    //console.log('Analysis:', JSON.stringify(analysis, null, 2));
 
     expect(analysis.metadata.formulaCount).toBe(3);
-    const circularIssues = analysis.issues.filter(i => 
+    const circularIssues = analysis.issues.filter((i: any) => 
       i.type === 'formula' && 
       i.severity === 'error' && 
       i.message.includes('Circular reference')
     );
 
     expect(circularIssues.length).toBe(3);
-    expect(circularIssues.map(i => i.cell)).toContain('A1');
-    expect(circularIssues.map(i => i.cell)).toContain('B1');
-    expect(circularIssues.map(i => i.cell)).toContain('C1');
+    expect(circularIssues.map((i: any) => i.cell)).toContain('A1');
+    expect(circularIssues.map((i: any) => i.cell)).toContain('B1');
+    expect(circularIssues.map((i: any) => i.cell)).toContain('C1');
   });
 
   test('accepts valid cross-references', () => {
@@ -76,7 +76,7 @@ describe('CircularReferences', () => {
     const analysis = analyzer.analyze();
 
     expect(analysis.metadata.formulaCount).toBe(1);
-    expect(analysis.issues.filter(i => 
+    expect(analysis.issues.filter((i: any) => 
       i.type === 'formula' && 
       i.message.includes('Circular reference')
     ).length).toBe(0);
@@ -91,7 +91,7 @@ describe('CircularReferences', () => {
     const analyzer = ExcelAnalyzer.fromBuffer(xlsxBuffer);
     const analysis = analyzer.analyze();
     
-    console.log('Direct Circular Analysis:', JSON.stringify(analysis, null, 2));
+    //console.log('Direct Circular Analysis:', JSON.stringify(analysis, null, 2));
 
     expect(analysis.metadata.formulaCount).toBe(1);
     expect(analysis.issues).toContainEqual(
@@ -109,17 +109,17 @@ describe('CircularReferences', () => {
     const analyzer = ExcelAnalyzer.fromBuffer(xlsxBuffer);
     const analysis = analyzer.analyze();
 
-    console.log('Indirect Circular Analysis:', JSON.stringify(analysis, null, 2));
+    //console.log('Indirect Circular Analysis:', JSON.stringify(analysis, null, 2));
 
     expect(analysis.metadata.formulaCount).toBe(3);
-    const circularIssues = analysis.issues.filter(i => 
+    const circularIssues = analysis.issues.filter((i: any) => 
       i.type === 'formula' && 
       i.severity === 'error' && 
       i.message.includes('Circular reference')
     );
 
     expect(circularIssues.length).toBe(3);
-    expect(circularIssues.map(i => i.cell).sort()).toEqual(['A1', 'B1', 'C1']);
+    expect(circularIssues.map((i: any) => i.cell).sort()).toEqual(['A1', 'B1', 'C1']);
   });
 
   test('accepts valid cross-references from file', () => {
@@ -127,12 +127,12 @@ describe('CircularReferences', () => {
     const analyzer = ExcelAnalyzer.fromBuffer(xlsxBuffer);
     const analysis = analyzer.analyze();
 
-    console.log('Valid Cross Reference Analysis:', JSON.stringify(analysis, null, 2));
+    //console.log('Valid Cross Reference Analysis:', JSON.stringify(analysis, null, 2));
 
     expect(analysis.metadata.formulaCount).toBe(1);
-    expect(analysis.issues.filter(i => 
+    expect(analysis.issues.filter((i: any) => 
       i.type === 'formula' && 
       i.message.includes('Circular reference')
     ).length).toBe(0);
   });
-});
+});``
