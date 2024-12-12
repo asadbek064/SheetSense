@@ -1,4 +1,4 @@
-# SheetSense
+# [SheetSense](https://ezy.ovh/hyyit)
 [![private registry](https://img.shields.io/badge/verdaccio-blue?style=flat-square)](https://vdo.asadk.dev/-/web/detail/sheetsense)
 [![npm version](https://img.shields.io/npm/v/sheetsense.svg?style=flat-square)](https://www.npmjs.com/package/sheetsense)
 [![npm downloads](https://img.shields.io/npm/dm/sheetsense.svg?style=flat-square)](https://www.npmjs.com/package/sheetsense)
@@ -108,51 +108,15 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 For support, bug reports and feature requests please use GitHub Issues.
 
 ## Roadmap
-### Formula Analysis
-
-- [ ] Basic complexity scoring
-- ✅ Division by zero detection 
-- [ ] Complex formula detection 
-- ✅ Basic formula parser
-- ✅ Circular reference detection
-
-### Data Validation
-
-- ✅ Data type consistency 
-- ✅ Date format validation
-- ✅ Column type analysis 
-- ✅ Mixed type detection 
-
-### Style Checks
-
-- ✅ Number format consistency
-- ✅ Format pattern detection 
-
-### Hidden Content Analysis
-
-- ✅ Hidden cell detection
-- ✅ Hidden row/column analysis
-- ✅ Hidden range identification
-- ✅ Hidden content metrics
-
-### Metadata
-
-- ✅ Basic statistics tracking
-- ✅ Formula count
-- ✅ Sheet count
-- ✅ Named ranges list
-- ✅ Basic metrics
-
-
-
 ## 🚧 In Development
 ### Formula Analysis
 
 - ✅ Integrate xlsx for parsing
 - ✅ Pattern recognition system
--    Enhanced complexity scoring
 - ✅ Risk assessment system
 -    Formula explanation generator
+-    Complex formula detection 
+-    Basic complexity scoring
 
 ### Core Features
 
